@@ -1,0 +1,26 @@
+<van-nav-bar
+  title="信息绑定"
+  left-text="返回"
+  right-text="增加"
+  left-arrow
+  bind:click-left="onClickLeft"
+  bind:click-right="onClickAdd"
+/>
+
+  <van-cell-group
+    wx:for="{{ bindings }}"
+    wx:for-item="bingding"
+    wx:key="index"
+  >
+    <van-cell
+      id="{{ bingding._id }}"
+      title="{{ bingding.classes_name }}"
+      label="{{ bingding.relationship }}"
+      size="large"
+      border="{{ false }}"
+      name="delete"
+      center
+    >
+      <van-icon slot="right-icon" name="delete"/>
+    </van-cell>
+  </van-cell-group>

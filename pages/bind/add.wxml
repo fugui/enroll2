@@ -1,0 +1,23 @@
+<van-nav-bar
+  title="新增绑定"
+  left-text="返回"
+  left-arrow
+  bind:click-left="onClickLeft"
+/>
+
+
+ <van-cell title="{{ cityName }}"  bind:click="onChangeCity" />
+
+
+<van-popup
+  show="{{ selectCitying }}"
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+>
+  <van-area area-list="{{ areaList }}" value="{{ city }}"
+    visible-item-count="5" 
+    bind:confirm="onSelectedCity"
+    bind:cancel="onCancelCity"
+  />
+</van-popup>

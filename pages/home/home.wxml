@@ -1,0 +1,18 @@
+<van-nav-bar
+  right-text="管理"
+  bind:click-right="onBindClick"
+  center
+>
+    <van-image
+      slot="left"
+      class="avatar"
+      width="120rpx"
+      height="120rpx"
+      round
+      src="{{ userInfo.avatarUrl }}"
+    />
+    <van-dropdown-menu slot="title">
+      <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
+    </van-dropdown-menu>
+</van-nav-bar>
+

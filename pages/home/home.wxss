@@ -1,0 +1,6 @@
+
+.avatar {
+  display:inline-block;
+  vertical-align:middle; 
+  margin:-20rpx 0rpx -20rpx -20rpx;
+}
