@@ -9,7 +9,16 @@ Page({
     areaList: area,
     selectCitying: false,
     city: "440304",
-    cityName: "广东省 深圳市 福田区"
+    cityName: "广东省 深圳市 福田区",
+
+    school: "0001",
+    selectSchooling: false,
+    schools: [
+      { value: "0001", text: "荔园小学玮鹏校区" }
+    ],
+
+    schoolName: "",
+
   },
 
   onClickLeft: function (event) {
@@ -21,7 +30,7 @@ Page({
   },
 
   onCancelCity: function(event) {
-    this.setData({ selectCitying: false })
+    this.setData({ selectCitying: false, selectSchooling:false })
   },
 
   onSelectedCity: function(event) {
@@ -30,6 +39,29 @@ Page({
       city: event.detail.values[2].code,
       cityName: [event.detail.values[0].name, event.detail.values[1].name, event.detail.values[2].name].join(' ') 
        })
+  },
+
+  toAddSchool: function (event) {
+    this.setData({ selectSchooling: true })
+  },
+
+  addSchool : function(event) {
+    const db = wx.cloud.database({
+      env: 'enroll2-oll29'
+    })
+    db.collection('tbl_school').add( {
+      data: {
+        name: this.data.schoolName,
+        city: this.data.city,
+        approved: false,
+      }
+
+    } );
+
+  },
+
+  onSelectedSchool: function (event) {
+    console.info( event );
   },
 
   /**

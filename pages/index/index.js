@@ -46,7 +46,7 @@ Page({
       app.globalData.openId = res.result.openid;
 
       console.info(app.globalData.openId )
-      wx.navigateTo({
+      wx.redirectTo({
         url: '../home/home'
       })
     });

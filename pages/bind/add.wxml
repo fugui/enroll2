@@ -5,19 +5,26 @@
   bind:click-left="onClickLeft"
 />
 
+<van-cell-group>
+  <van-cell title="{{ cityName }}"  bind:click="onChangeCity" />
+  <van-popup show="{{ selectCitying }}"  position="bottom" custom-style="height: 50%" bind:close="onClose" >
+    <van-area area-list="{{ areaList }}" value="{{ city }}"
+      visible-item-count="5" bind:confirm="onSelectedCity" bind:cancel="onCancelCity" />
+  </van-popup>
 
- <van-cell title="{{ cityName }}"  bind:click="onChangeCity" />
+  <van-dropdown-menu>
+    <van-dropdown-item value="{{ school }}" options="{{ schools }}" />
+    <van-icon name="add-o" size="30px" bind:click="toAddSchool"/>
+    <van-popup show="{{ selectSchooling }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
+        <view>
+            新增之前，请确认是否已经存在，并确认是否别名等。 新增学校后，请稍等系统后台确认后方可使用。
+            <van-divider contentPosition="center">请输入学校名称：</van-divider>
+
+            <input auto-focus placeholder="新增学校名称" value="{{ schoolName }}"/>
+            <van-button type="primary" bind:click="addSchool">新增</van-button>
+        </view>
+    </van-popup>
+  </van-dropdown-menu>
 
 
-<van-popup
-  show="{{ selectCitying }}"
-  position="bottom"
-  custom-style="height: 50%"
-  bind:close="onClose"
->
-  <van-area area-list="{{ areaList }}" value="{{ city }}"
-    visible-item-count="5" 
-    bind:confirm="onSelectedCity"
-    bind:cancel="onCancelCity"
-  />
-</van-popup>
+</van-cell-group>
