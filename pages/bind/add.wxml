@@ -15,16 +15,32 @@
   <van-dropdown-menu>
     <van-dropdown-item value="{{ school }}" options="{{ schools }}" />
     <van-icon name="add-o" size="30px" bind:click="toAddSchool"/>
-    <van-popup show="{{ selectSchooling }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
+    <van-popup show="{{ addingSchool }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
         <view>
             新增之前，请确认是否已经存在，并确认是否别名等。 新增学校后，请稍等系统后台确认后方可使用。
             <van-divider contentPosition="center">请输入学校名称：</van-divider>
 
-            <input auto-focus placeholder="新增学校名称" value="{{ schoolName }}"/>
+            <input auto-focus placeholder="新增学校名称" bindinput="onInputSchoolName"/>
             <van-button type="primary" bind:click="addSchool">新增</van-button>
         </view>
     </van-popup>
   </van-dropdown-menu>
+
+  <van-dropdown-menu>
+    <van-dropdown-item value="{{ classes }}" options="{{ classesList }}" />
+    <van-icon name="add-o" size="30px" bind:click="toAddSchool"/>
+    <van-popup show="{{ addingSchool }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
+        <view>
+            新增之前，请确认是否已经存在，并确认是否别名等。 新增学校后，请稍等系统后台确认后方可使用。
+            <van-divider contentPosition="center">请输入学校名称：</van-divider>
+
+            <input auto-focus placeholder="新增学校名称" bindinput="onInputSchoolName"/>
+            <van-button type="primary" bind:click="addSchool">新增</van-button>
+        </view>
+    </van-popup>
+  </van-dropdown-menu>
+
+
 
 
 </van-cell-group>

@@ -12,12 +12,36 @@ Page({
     cityName: "广东省 深圳市 福田区",
 
     school: "0001",
-    selectSchooling: false,
+    addingSchool: false,
     schools: [
       { value: "0001", text: "荔园小学玮鹏校区" }
     ],
 
     schoolName: "",
+
+  },
+
+  updateSchools:function () {
+    const db = wx.cloud.database({
+      env: 'enroll2-oll29'
+    })    
+    db.collection('tbl_school').where({city: this.data.city}).get().then(res => {
+      var array = [];
+      res.data.map( item=> { 
+        var t = item.name;
+        if( item.approved )
+          t += '(待审批)'
+        array.push({ text: t,  approved: item.approved,  value: item._id} )
+      });
+
+      this.setData({
+        schools: array
+      });
+
+      if( array.length > 0) {
+        this.setData( {school: array[0].value} );
+      }
+    });
 
   },
 
@@ -39,16 +63,24 @@ Page({
       city: event.detail.values[2].code,
       cityName: [event.detail.values[0].name, event.detail.values[1].name, event.detail.values[2].name].join(' ') 
        })
+    this.updateSchools();
   },
 
   toAddSchool: function (event) {
-    this.setData({ selectSchooling: true })
+    this.setData({ addingSchool: true, schoolName: '' })
+  },
+
+  onInputSchoolName: function(event) {
+    this.setData( {schoolName: event.detail.value})
   },
 
   addSchool : function(event) {
     const db = wx.cloud.database({
       env: 'enroll2-oll29'
     })
+    
+    //todo: check name
+
     db.collection('tbl_school').add( {
       data: {
         name: this.data.schoolName,
@@ -57,7 +89,8 @@ Page({
       }
 
     } );
-
+    this.setData({ addingSchool: false })
+    this.updateSchools();
   },
 
   onSelectedSchool: function (event) {
@@ -82,7 +115,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.updateSchools();
   },
 
   /**
