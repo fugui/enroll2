@@ -6,18 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    option1: [
-      { text: '17号 傅业峻 爸爸', value: 0 },
-      { text: '四(4)班 语文老师', value: 1 },
-      { text: '12号 傅薪桦 爸爸', value: 2 }
-    ],
-    value1: 0
+    bindings: [],
+    showingPublish: false,
+    checkedAll : true,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function (options) {    
     if (app.globalData.userInfo ) {
       console.log(app.globalData.userInfo)
       this.setData({
@@ -27,8 +24,22 @@ Page({
   },
 
   onBindClick: function(event) {
+
+    wx.requestSubscribeMessage({
+      tmplIds: ['KhaxRzQyVS5rcpNhxGCPqKzYxJdgtZz4nnFQc-9P17U', 'WZ9rVJ51dqInweEj1gqjcLRu9u6JFCz7dXb0QODOSyg'],
+      success(res) { console.info(res) },
+      fail(res) { console.info(res) }
+    })
+
+
     wx.navigateTo({
       url: '/pages/bind/index',
+    })
+  },
+
+  onChangeAll: function(event) {
+    this.setData({
+      checkedAll: !this.data.checkedAll
     })
   },
 
@@ -43,8 +54,34 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    const db = wx.cloud.database({
+      env: 'enroll2-oll29'
+    })
+    db.collection('tbl_binding').get().then(res => {
 
+      res.data.map( item=> {        
+        item.title = (item.teacher)?item.course.text+item.teacherName+"老师":item.student.id+"号"+item.family.text;
+      })
+
+      this.setData({
+        bindings: res.data
+      })
+    });
   },
+
+  toPublish: function(event) {
+    this.setData( {
+      showingPublish: !this.data.showingPublish
+    })
+  },
+
+  publishHomework: function (event) {
+    console.info(event)
+    wx.cloud.callFunction({ name: "publish" }).then(res => {
+      console.info(res);
+    })
+    this.toPublish(event);
+  }, 
 
   /**
    * 生命周期函数--监听页面隐藏

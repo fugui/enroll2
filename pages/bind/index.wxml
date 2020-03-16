@@ -21,6 +21,6 @@
       name="delete"
       center
     >
-      <van-icon slot="right-icon" name="delete"/>
+      <van-icon slot="right-icon" name="delete" data-id="{{ bingding._id }}" bind:click="onDeleteBinding"/>
     </van-cell>
   </van-cell-group>

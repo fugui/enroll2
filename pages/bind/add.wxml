@@ -7,15 +7,15 @@
 
 <van-cell-group>
   <van-cell title="{{ cityName }}"  bind:click="onChangeCity" />
-  <van-popup show="{{ selectCitying }}"  position="bottom" custom-style="height: 50%" bind:close="onClose" >
+  <van-popup show="{{ selectCitying }}"  position="bottom" custom-style="height: 50%" bind:close="onClassesClose" >
     <van-area area-list="{{ areaList }}" value="{{ city }}"
       visible-item-count="5" bind:confirm="onSelectedCity" bind:cancel="onCancelCity" />
   </van-popup>
 
   <van-dropdown-menu>
-    <van-dropdown-item value="{{ school }}" options="{{ schools }}" />
+    <van-dropdown-item value="{{ school.value }}" options="{{ schools }}" bind:change="onSelectedSchool" />
     <van-icon name="add-o" size="30px" bind:click="toAddSchool"/>
-    <van-popup show="{{ addingSchool }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
+    <van-popup show="{{ addingSchool }}" position="bottom" custom-style="height: 50%" bind:close="onClassesClose" >
         <view>
             新增之前，请确认是否已经存在，并确认是否别名等。 新增学校后，请稍等系统后台确认后方可使用。
             <van-divider contentPosition="center">请输入学校名称：</van-divider>
@@ -27,19 +27,42 @@
   </van-dropdown-menu>
 
   <van-dropdown-menu>
-    <van-dropdown-item value="{{ classes }}" options="{{ classesList }}" />
-    <van-icon name="add-o" size="30px" bind:click="toAddSchool"/>
-    <van-popup show="{{ addingSchool }}" position="bottom" custom-style="height: 50%" bind:close="onClose" >
+    <van-dropdown-item value="{{ classes.value }}" options="{{ classesList }}" bind:change="onSelectedClasses" />
+    <van-icon name="add-o" size="30px" bind:click="toAddClasses"/>
+    <van-popup show="{{ addingClasses }}" position="bottom" custom-style="height: 50%" bind:close="onClassesClose" >
         <view>
-            新增之前，请确认是否已经存在，并确认是否别名等。 新增学校后，请稍等系统后台确认后方可使用。
-            <van-divider contentPosition="center">请输入学校名称：</van-divider>
+          <form bind:submit='onAddClasses'>
+            新增之前，请确认是否已经存在，并确认是否别名等。 新增班级后，请稍等系统后台确认后方可使用。
+            <van-divider contentPosition="center">{{ school.text }}</van-divider>
+            <input auto-focus placeholder="新增班级名称" name="name"/>
+            <input placeholder="新增班级最大学号" name="count"/>
 
-            <input auto-focus placeholder="新增学校名称" bindinput="onInputSchoolName"/>
-            <van-button type="primary" bind:click="addSchool">新增</van-button>
+            <view class='ligin-button'>
+              <button formType="submit" type='primary'>新增</button>
+            </view>
+          </form>
         </view>
     </van-popup>
   </van-dropdown-menu>
 
+  <van-dropdown-menu>
+    <van-dropdown-item value="{{ role }}" options="{{ roleList }}" bind:change="onSelectedRole" />
+  </van-dropdown-menu>
+
+  <view  wx:if="{{ isTeacher }}">
+    <van-dropdown-menu>
+      <van-dropdown-item value="{{ teacher }}" options="{{ teachers }}"/>
+      <van-field value="{{ teacherName }}" placeholder="老师姓氏" clearable bind:change="onTeacherNameChanged" />
+    </van-dropdown-menu>
+    <van-button wx:if="{{ teacherName.length > 0 }}" type="primary" bind:click="bindTeacher">新增</van-button>
+  </view>
+  <view  wx:else>
+    <van-dropdown-menu>
+      <van-field value="" type="number" placeholder="学生学号" clearable bind:change="onStudentIdChanged" />
+      <van-dropdown-item value="{{ studentRole }}" options="{{ studentRoles }}"/>
+    </van-dropdown-menu>
+    <van-button wx:if="{{ studentID > 0 }}" type="primary" bind:click="bindStudent">新增</van-button>
+  </view>
 
 
 

@@ -16,12 +16,23 @@ Page({
       env: 'enroll2-oll29'
     })
     db.collection('tbl_binding').get().then(res => {
+
+      var array = [];
+      res.data.map(item => {
+        let relationship = "";
+        if( item.teacher ) {
+          relationship = item.course.text + item.teacherName + "老师";
+        } else {
+          relationship = item.student.id + "号" + item.student.name + item.family.text;
+        }
+
+        array.push({ _id: item._id, classes_name: item.classes.text, relationship: relationship })
+      });
+
       this.setData( {
-        bindings: res.data
+        bindings: array
       } )
     });
-
-
   },
 
   onClickLeft: function(event) {
@@ -32,6 +43,15 @@ Page({
     wx.navigateTo({
       url: 'add',
     })
+  },
+
+  onDeleteBinding: function(event) {
+    const db = wx.cloud.database({
+      env: 'enroll2-oll29'
+    })
+    db.collection('tbl_binding').doc( event.target.dataset.id).remove();
+
+    this.onLoad( {} );
   },
 
   /**

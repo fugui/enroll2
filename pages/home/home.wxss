@@ -4,3 +4,12 @@
   vertical-align:middle; 
   margin:-20rpx 0rpx -20rpx -20rpx;
 }
+
+.content {
+  padding: 20px;
+  font-size: 16px;
+}
+
+.footer {
+  text-align: right;
+}

@@ -3,16 +3,53 @@
   bind:click-right="onBindClick"
   center
 >
-    <van-image
-      slot="left"
-      class="avatar"
-      width="120rpx"
-      height="120rpx"
-      round
-      src="{{ userInfo.avatarUrl }}"
-    />
-    <van-dropdown-menu slot="title">
-      <van-dropdown-item value="{{ value1 }}" options="{{ option1 }}" />
-    </van-dropdown-menu>
+  <van-image
+    slot="left"
+    class="avatar"
+    width="120rpx"
+    height="120rpx"
+    round
+    src="{{ userInfo.avatarUrl }}"
+  />
 </van-nav-bar>
 
+<view wx:for="{{ bindings }}" wx:key="idx" wx:for-item="binding">
+  <van-panel wx:if="{{ binding.teacher }}" title="{{ binding.title }}" desc="{{ binding.school.text + binding.classes.text }}" status="Role" use-footer-slot>
+
+
+    <view slot="footer" class="footer">
+      <van-button size="small" bind:click="toPublish">发布新作业</van-button>
+    </view>
+
+    <van-popup show="{{ showingPublish }}"  position="bottom" custom-style="height: 70%" bind:close="toPublish" >
+    <van-cell-group>
+      <form bind:submit='publishHomework'>
+
+        <van-divider contentPosition="center">作业内容</van-divider>
+        <textarea name="content" custom-style="height: 350rpx; margin-left:20rpx; border:1px groove black;" />
+
+        <van-cell center title="全班同学必做">
+          <van-switch
+            checked="{{ checkedAll }}"
+            bind:change="onChangeAll"
+          />
+        </van-cell>
+
+        <van-cell center title="时间限制（天）">
+          <van-stepper value="{{ 1 }}" />
+        </van-cell>
+
+        <view class="footer">
+          <button size="small" formType="submit" type='primary' >发布新作业</button>
+        </view>
+
+      </form>
+      </van-cell-group>
+    </van-popup>
+  </van-panel>
+
+  <van-panel wx:else title="{{ binding.title }}" desc="{{ binding.school.text + binding.classes.text }}" status="Role" use-footer-slot>
+    <view>暂时没有未完成的作业</view>
+  </van-panel>
+
+</view>
